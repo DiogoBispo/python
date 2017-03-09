@@ -1,0 +1,28 @@
+import socket
+
+server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ip = "0.0.0.0"
+port = 875
+
+file = open("shell.php", 'w')
+
+try:
+    ##server.bind(("0.0.0.0")) para capturar todos os ip
+    server.bind((ip, port))
+    ##comando para escutar o ip e a porta acima com o numero de conexoes 5
+    server.listen(5)
+    print "Listening in: " + ip + ":" + str(port)
+    ##toda vez que conectar ele aceita
+    (client_socket, address) = server.accept()
+
+    print "Received from: " + address[0]
+
+    data = client_socket.recv(1024)
+    file.write(data)
+
+    server.close()
+
+except Exception as erro:
+    print "Erro: " + str(erro)
+    server.close()
+
