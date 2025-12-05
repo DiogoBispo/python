@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  api:
+    build: .
+    container_name: flask_api
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - SQLALCHEMY_DATABASE_URI=postgresql://postgres:postgres@postgres:5432/desafio
+      - JWT_SECRET_KEY=supersecret
+      - SECRET_KEY=supersecret
+
+  postgres:
+    image: postgres:14
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: desafio
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:6
+    container_name: redis_queue
+    ports:
+      - "6379:6379"
